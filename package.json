@@ -1,0 +1,19 @@
+{
+  "name": "personal-api-proxy",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "deo": "^0.0.2",
+    "express": "~4.14.0",
+    "lodash": "^4.17.4",
+    "morgan": "~1.7.0",
+    "request": "^2.79.0",
+    "urijs": "^1.18.7"
+  }
+}
