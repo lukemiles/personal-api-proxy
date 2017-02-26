@@ -29,7 +29,7 @@ router.get('/reading', (req, res) => {
         var pinboard = JSON.parse(data.body);
         var posts = [];
         _.each(pinboard.posts, (post) => {
-          var hostname = new URI(post.href).hostname();
+          var hostname = new URI(post.href).domain();
           var formatted = {
             href: post.href,
             hostname,
