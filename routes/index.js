@@ -9,6 +9,25 @@ var config = require('../config');
 router.get('/', (req, res) => {
   res.json({ error: false })
 });
+router.get('/music', (req, res) => {
+  request({
+    url: 'https://ws.audioscrobbler.com/2.0',
+    qs: {
+      api_key: config('lastfm'),
+      method: 'user.getrecenttracks',
+      user: 'notlukemiles',
+      format: 'json'
+    }
+  }, (err, data) => {
+    if (err) {
+      res.status(500);
+      res.json({ error: true });
+    } else {
+      res.type('json');
+      res.send(data.body);
+    }
+  });
+});
 
 router.get('/reading', (req, res) => {
   request({
