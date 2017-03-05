@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request');
 var _ = require('lodash');
 var URI = require('urijs');
+var moment = require('moment');
 
 var router = express.Router();
 var config = require('../config');
@@ -29,18 +30,28 @@ router.get('/music', (req, res) => {
   });
 });
 
-router.get('/reading', (req, res) => {
+router.get('/reading/:limit?', (req, res) => {
+  let limit = 5;
+  if (_.isString(req.params.limit)) {
+    try {
+      let limitParsed = Number(req.params.limit);
+      if (_.isNumber(limitParsed) && limitParsed <= 50) {
+        limit = limitParsed;
+      }
+    } catch (e) {
+      limit = 5;
+    }
+  };
   request({
     url: `https://api.pinboard.in/v1/posts/recent`,
     qs: {
       auth_token: config('pinboard'),
       tag: 'publish',
-      count: '5',
+      count: limit,
       format: 'json',
     }
   }, (err, data) => {
     if (err) {
-
       res.status(500);
       res.json({ error: true });
     } else {
@@ -55,6 +66,7 @@ router.get('/reading', (req, res) => {
             title: post.description,
             description: post.extended,
             time: post.time,
+            formattedTime: moment(post.time).format('dddd, MMMM Do')
           };
           posts.push(formatted);
         })
