@@ -66,7 +66,7 @@ router.get('/reading/:limit?', (req, res) => {
             title: post.description,
             description: post.extended,
             time: post.time,
-            formattedTime: moment(post.time).format('dddd, MMMM Do')
+            formattedTime: moment(post.time).format('dddd, MMMM Do, YYYY')
           };
           posts.push(formatted);
         })
