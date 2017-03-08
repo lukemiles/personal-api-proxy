@@ -3,6 +3,7 @@ var request = require('request');
 var _ = require('lodash');
 var URI = require('urijs');
 var moment = require('moment');
+var sanitizeHtml = require('sanitize-html');
 
 var router = express.Router();
 var config = require('../config');
@@ -60,11 +61,12 @@ router.get('/reading/:limit?', (req, res) => {
         var posts = [];
         _.each(pinboard.posts, (post) => {
           var hostname = new URI(post.href).domain();
+          var sanitizeOptions = { allowedTags: [], allowedAttributes: [],};
           var formatted = {
             href: post.href,
             hostname,
-            title: post.description,
-            description: post.extended,
+            title: sanitizeHtml(post.description, sanitizeOptions),
+            description: sanitizeHtml(post.extended, sanitizeOptions),
             time: post.time,
             formattedTime: moment(post.time).format('dddd, MMMM Do, YYYY')
           };
