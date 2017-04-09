@@ -62,13 +62,17 @@ router.get('/reading/:limit?', (req, res) => {
         _.each(pinboard.posts, (post) => {
           var hostname = new URI(post.href).domain();
           var sanitizeOptions = { allowedTags: [], allowedAttributes: [],};
+          let description = sanitizeHtml(post.extended, sanitizeOptions);
+          description = `<p><blockquote>${description}</blockquote></p>`
+          .replace(/\/c\//g, '</p><blockquote>')
+          .replace(/\/ec\//g, '</blockquote><p>')
+          .replace(/<blockquote><\/blockquote>/g, '')
+          .replace(/<p><\/p>/g, '');
           var formatted = {
             href: post.href,
             hostname,
             title: sanitizeHtml(post.description, sanitizeOptions),
-            description: sanitizeHtml(post.extended, sanitizeOptions)
-            .replace(/\/c\//g, '</p><blockquote>')
-            .replace(/\/ec\//g, '</blockquote><p>'),
+            description,
             time: post.time,
             formattedTime: moment(post.time).format('dddd, MMMM Do, YYYY')
           };
