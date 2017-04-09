@@ -66,7 +66,9 @@ router.get('/reading/:limit?', (req, res) => {
             href: post.href,
             hostname,
             title: sanitizeHtml(post.description, sanitizeOptions),
-            description: sanitizeHtml(post.extended, sanitizeOptions),
+            description: sanitizeHtml(post.extended, sanitizeOptions)
+            .replace(/\/c\//g, '</p><blockquote>')
+            .replace(/\/ec\//g, '</blockquote><p>'),
             time: post.time,
             formattedTime: moment(post.time).format('dddd, MMMM Do, YYYY')
           };
