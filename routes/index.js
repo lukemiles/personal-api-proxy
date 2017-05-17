@@ -36,7 +36,7 @@ router.get('/reading/:limit?', (req, res) => {
   if (_.isString(req.params.limit)) {
     try {
       let limitParsed = Number(req.params.limit);
-      if (_.isNumber(limitParsed) && limitParsed <= 50) {
+      if (_.isNumber(limitParsed) && limitParsed <= 150) {
         limit = limitParsed;
       }
     } catch (e) {
